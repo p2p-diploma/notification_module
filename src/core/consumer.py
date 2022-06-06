@@ -57,11 +57,10 @@ async def _proceed_transaction_notification(
         {message}
     """.strip()
 
-    db: AsyncSession = async_session()
-
     for receiver in receivers:
         notif = NotificationCreate(title=title, description=description, owner=receiver)
-        _ = await crud.notifications.create(db, obj_in=notif)
+        async with async_session() as db:
+            _ = await crud.notifications.create(db, obj_in=notif)
 
 
 async def start_consuming():
@@ -73,7 +72,6 @@ async def start_consuming():
     while True:
         try:
             results = redis.xreadgroup(group, key, {key: ">"}, None)
-
             if results:
                 for result in results:
                     await _proceed_transaction_notification(result)

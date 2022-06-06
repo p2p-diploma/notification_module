@@ -17,6 +17,6 @@ async def get_notifications(
     db: AsyncSession = Depends(dependencies.get_session),
     current_user: dict[str, Any] = Depends(dependencies.get_current_user),
 ):
-    email = current_user['email']
+    email = current_user['user_id']
     notifications = await crud.notifications.get_multi_by_email(db=db, owner=email, skip=offset)
     return notifications
