@@ -38,19 +38,20 @@ async def _proceed_transaction_notification(
 
     if status == TransactionStatus.ON_PAYMENT_WAIT:
         receivers = [obj["buyer_email"]]
-        message = "Please, approve payment and proceed trade!"
+        message = f"Please, approve payment and proceed trade!\nTrade Link: {app_settings.SERVICE_API}/lots/{obj['lot_id']}{obj['id']}"
 
     if status == TransactionStatus.ON_APPROVE:
         receivers = [obj["seller_email"]]
-        message = "Please, approve payment and proceed trade!"
+        message = f"Please, approve payment and proceed trade!" \
+                  f"\nTrade Link: {app_settings.SERVICE_API}/lots/{obj['lot_id']}{obj['id']}"
 
     if status == TransactionStatus.SUCCESS:
         receivers = [obj["seller_email"], obj["buyer_email"]]
-        message = "Your trade successfully proceeded"
+        message = f"Your trade successfully proceeded\nTrade Link: {app_settings.SERVICE_API}/lots/{obj['lot_id']}{obj['id']}"
 
     if status == TransactionStatus.EXPIRED:
         receivers = [obj["buyer_email"]]
-        message = "Your trade is expired"
+        message = f"Your trade is expired\nTrade Link: {app_settings.SERVICE_API}/lots/{obj['lot_id']}{obj['id']}"
 
     description = f"""
         New status: {TransactionStatus(obj['status']).name}

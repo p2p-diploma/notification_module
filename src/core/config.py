@@ -21,6 +21,7 @@ class AppSettings(BaseSettings):
     SQLALCHEMY_DATABASE_URI_ASYNC: Optional[AsyncPostgresDsn] = None
 
     REDIS_HOST: str
+    SERVICE_API: str
     IS_CONSUMER: bool = False
 
     @validator("POSTGRES_DB", pre=True)
